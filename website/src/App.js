@@ -1,27 +1,25 @@
-import logo from './logo.png';
-import React, {Component} from 'react'
-import { Typography, Link } from "@material-ui/core";
-import './App.css';
+import React from "react";
+import Homepage from "./component/Homepage";
+import Feed from "./component/Feed";
 
+import "./App.css";
+import { Route, Routes, Switch } from 'react-router-dom'
 
-var headertextstyle = {
-    fontsize : 50,
-    fontFamily : "Noto Sans"
-}
-class App extends Component {
-    render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} alt="logo" height={150} width={150}/>
-                    <Typography style={headertextstyle}>
-                        Smart Pet Feeder
-                    </Typography>
-                </header>
-            </div>
-        )
-    }
+import { Grid } from '@material-ui/core';
 
+const App = () => {
+  return (
+    <Grid container direction="column">
+
+    <div className="App">
+        <Switch>
+            <Route path="/" component={Homepage} />
+            <Route path="/feed" component={Feed} />
+
+        </Switch>
+    </div>
+    </Grid>
+  );
 }
 
 export default App;
