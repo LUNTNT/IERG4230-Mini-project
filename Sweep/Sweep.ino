@@ -33,19 +33,20 @@ Servo myservo;  // create servo object to control a servo
 // twelve servo objects can be created on most boards
 
 HX711 scale(14, 12);  // 14 = ESP8266 GPIO14(D5), 12 = ESP8266 GPIO12(D6)
-int  pir       = 15;  // D8
+int  pir       = 4;  // D2
 int  led       = 16;  // On Board LED GPIO 16(D0)
-int  servopin  = 13;  // D7
+int  servopin  = 5;  // D1
 
-float original_weight;
 //float calibrate_parameter = 338.13;  // this value is obtained by calibrating the scale with known weights; see the README for details
 float calibrate_parameter = 321.44;  // this value is obtained by calibrating the scale with known weights; see the README for details
 
 int pos = 0;    // variable to store the servo position
 bool detect    = false;
+bool eating    = false;
 
 void feedHandler() {
   int feedtime;
+  float org_w, new_w;
   
   if (server.argName(0) == "time"){
     String temp = server.arg(0);
@@ -53,27 +54,35 @@ void feedHandler() {
   } else {
     server.send(500, "text/plain", "No Time Value");
   }
-  
+
   Serial.println("GET: Starting to drop fodder");
+  org_w = scale.get_units(5);
   delay(500);
-  
+
   myservo.write(180);  
   delay(feedtime * 1000); 
   myservo.write(0);
+  
   Serial.println("End of dropping fodder");
+  delay(500);
+  
+  Serial.print("Feed Time End: Scale Increased: \t");
+  new_w = scale.get_units(5);
+  Serial.print(new_w - org_w, 1);
+  Serial.println(" g");
 
-  server.send(200, "text/plain", "OK");
+  server.send(200, "application/json", "{\"original weight\":\""+String(org_w)+"\",\"new weight\":\""+String(new_w)+"\"}");
 }
 
 void weightHandler() {
-
+  float original_weight;
 
   Serial.print("GET: One reading: \t");
   original_weight = scale.get_units(5);
   Serial.print(original_weight, 1);
   Serial.println(" g");
 
-  server.send(200, "text/plain", String(original_weight));
+  server.send(200, "application/json",  "{\"weight\":\""+String(original_weight)+"\"}");
 }
 
 void setup() {
@@ -82,6 +91,7 @@ void setup() {
 
   //Hardware Setup
   myservo.attach(servopin);  
+  myservo.write(0);
 
   //PIR SETUP
   pinMode (pir, INPUT);
@@ -121,42 +131,37 @@ void setup() {
   server.begin();
   Serial.println("HTTP server started");
   
-  //SERVO SETUP
-
+  
   delay(500);
 }
 
 void loop() {
 
-    //detect = digitalRead(pir); // read PIR OUT pin (Movement detected = HIGH)
 
-    server.handleClient();
-    MDNS.update();
-  /*if (detect == true) {
+  //Server 
+  server.handleClient();
+  MDNS.update();
+
+  //Init PIR
+  detect = digitalRead(pir); // read PIR OUT pin (Movement detected = HIGH)
+
+  //PIR
+  if (detect == true) {
     digitalWrite(led, LOW);
     Serial.println("Movement detected");
- 
-    myservo.write(180);  
-    Serial.println(myservo.read());
-    delay(5000); 
-    myservo.write(0);
-    Serial.println(myservo.read());
-    delay(2000);
 
     Serial.print("one reading: \t");
-    original_weight = scale.get_units(5);
+    float original_weight = scale.get_units(5);
     Serial.print(original_weight, 1);
     Serial.println(" g");
 
   }
   else {
     digitalWrite(led, HIGH);
-    Serial.println("No movement detected");
-    myservo.write(0);              // tell servo to go to position in variable 'pos'
-    delay(1000); // waits 15 ms for the servo to reach the position
-    Serial.println(myservo.read());
-  }*/
+    //Serial.println("No movement detected");
 
-  delay(100);
+  }
+
+  delay(1000);
 
 }
