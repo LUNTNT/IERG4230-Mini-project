@@ -1,6 +1,6 @@
 import React from "react";
 import Homepage from "./component/Homepage";
-import Feed from "./component/Feed";
+import Statistic from "./component/Statistic";
 
 import "./App.css";
 import { Route, Routes, Switch } from 'react-router-dom'
@@ -14,7 +14,7 @@ const App = () => {
     <div className="App">
         <Switch>
             <Route path="/" component={Homepage} />
-            <Route path="/feed" component={Feed} />
+            <Route path="/stat" component={Statistic} />
 
         </Switch>
     </div>

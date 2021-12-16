@@ -37,6 +37,9 @@ class Homepage extends Component {
                      <Button variant="contained" onClick={this.handleClick}>
                         Feed
                     </Button>
+                    <Button variant="contained" href="/stat" >
+                        Statistic
+                    </Button>
             </div>
         )
     }
