@@ -66,12 +66,12 @@ void feedHandler() {
   Serial.println("End of dropping fodder");
   delay(500);
   
-  Serial.print("Feed Time End: Scale Increased: \t");
+  Serial.print("Feed Time End. Scale Increased: \t");
   new_w = scale.get_units(5);
   Serial.print(new_w - org_w, 1);
   Serial.println(" g");
 
-  server.send(200, "application/json", "{\"original weight\":\""+String(org_w)+"\",\"new weight\":\""+String(new_w)+"\"}");
+  server.send(200, "application/json", "{\"original weight\":"+String(org_w)+",\"new weight\":"+String(new_w)+"}");
 }
 
 void weightHandler() {
@@ -82,7 +82,7 @@ void weightHandler() {
   Serial.print(original_weight, 1);
   Serial.println(" g");
 
-  server.send(200, "application/json",  "{\"weight\":\""+String(original_weight)+"\"}");
+  server.send(200, "application/json",  "{\"weight\":"+String(original_weight)+"}");
 }
 
 void setup() {
@@ -135,6 +135,8 @@ void setup() {
   delay(500);
 }
 
+float original_weight, new_weight;
+
 void loop() {
 
 
@@ -146,22 +148,58 @@ void loop() {
   detect = digitalRead(pir); // read PIR OUT pin (Movement detected = HIGH)
 
   //PIR
-  if (detect == true) {
-    digitalWrite(led, LOW);
+  if (detect == true && eating == false) {
     Serial.println("Movement detected");
 
-    Serial.print("one reading: \t");
-    float original_weight = scale.get_units(5);
+    Serial.print("Read Original Weight: \t");
+    original_weight = scale.get_units(5);
     Serial.print(original_weight, 1);
     Serial.println(" g");
 
+    delay(5000);
+    Serial.print("Read New Weight: \t");
+    new_weight = scale.get_units(5);
+    Serial.print(new_weight, 1);
+    Serial.println(" g");
+
+    if (original_weight - new_weight >= 2) {
+      Serial.println("Eating detected");
+      eating = true;
+      digitalWrite(led, LOW);
+    }
   }
-  else {
+  
+  if (detect == true && eating == true) {
+    Serial.print("Eating continous: \t");
+    new_weight = scale.get_units(5);
+    Serial.print(new_weight, 1);
+    Serial.println(" g");
+  }
+
+  if (detect == false && eating == true) {
+    float temp_weight;
+    Serial.print("Detect eating: \t");
+    temp_weight = scale.get_units(5);
+    Serial.print(temp_weight, 1);
+    Serial.println(" g");
+
+    delay(5000);
+    Serial.print("Read New Weight: \t");
+    new_weight = scale.get_units(5);
+    Serial.print(new_weight, 1);
+    Serial.println(" g");
+
+    if (temp_weight - new_weight <= 2) {
+      Serial.println("Eating ended");
+      eating = false;
+      digitalWrite(led, HIGH);
+    }
+  }
+  
+  if (detect == false && eating == false) {
     digitalWrite(led, HIGH);
-    //Serial.println("No movement detected");
-
   }
 
-  delay(1000);
+  delay(5000);
 
 }
