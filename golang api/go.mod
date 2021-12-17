@@ -4,7 +4,6 @@ go 1.17
 
 require (
 	github.com/gofiber/fiber/v2 v2.22.0
-	github.com/gofiber/jwt/v2 v2.2.7
 	github.com/joho/godotenv v1.4.0
 	github.com/rs/xid v1.3.0
 	go.mongodb.org/mongo-driver v1.8.0
@@ -13,7 +12,6 @@ require (
 require (
 	github.com/andybalholm/brotli v1.0.2 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
-	github.com/golang-jwt/jwt/v4 v4.0.0 // indirect
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

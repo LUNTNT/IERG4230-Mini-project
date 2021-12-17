@@ -1,12 +1,6 @@
-/* Sweep
- by BARRAGAN <http://barraganstudio.com>
- This example code is in the public domain.
 
- modified 8 Nov 2013
- by Scott Fitzgerald
- https://www.arduino.cc/en/Tutorial/LibraryExamples/Sweep
-*/
 #include <Arduino.h>
+#include <ThingSpeak.h>
 
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -24,10 +18,16 @@
 #define STAPSK  "12345678"
 #endif
 
+#define FEED_CHANNELID 1611256
+#define FEED_CHANNELAPIKEY "BOO0SBFVWLQQCB5X"
+#define EAT_CHANNELID 1611327
+#define EAT_CHANNELAPIKEY "7DHYRFB1SQJSN7F9"
+
 const char* ssid = STASSID;
 const char* password = STAPSK;
 
 ESP8266WebServer server(80);
+WiFiClient client;
 
 Servo myservo;  // create servo object to control a servo
 // twelve servo objects can be created on most boards
@@ -71,7 +71,20 @@ void feedHandler() {
   Serial.print(new_w - org_w, 1);
   Serial.println(" g");
 
-  server.send(200, "application/json", "{\"original weight\":"+String(org_w)+",\"new weight\":"+String(new_w)+"}");
+  ThingSpeak.setField(1, org_w);
+  ThingSpeak.setField(2, new_w);
+  ThingSpeak.setField(3, new_w - org_w);
+  
+  int code = ThingSpeak.writeFields(FEED_CHANNELID, FEED_CHANNELAPIKEY);
+  if(code == 200){
+    Serial.println("Channel update successful.");
+  }
+  else{
+    Serial.println("Problem updating channel. HTTP error code " + String(code));
+  }
+  
+  server.send(200, "application/json", "{\"original_weight\":"+String(org_w)+",\"new_weight\":"+String(new_w)+"}");
+  delay(1000);
 }
 
 void weightHandler() {
@@ -82,6 +95,7 @@ void weightHandler() {
   Serial.print(original_weight, 1);
   Serial.println(" g");
 
+  //ThingSpeak.writeField(FEED_CHANNELID, 3, original_weight, FEED_CHANNELAPIKEY);
   server.send(200, "application/json",  "{\"weight\":"+String(original_weight)+"}");
 }
 
@@ -103,10 +117,6 @@ void setup() {
   scale.set_scale(calibrate_parameter);    // this value is obtained by calibrating the scale with known weights; see the README for details
   scale.tare();                           // reset the scale to 0
 
-
-
-  //WIFI SETUP
-  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.println("");
 
@@ -125,12 +135,16 @@ void setup() {
     Serial.println("MDNS responder started");
   }
 
+  //ThingSpeak
+  ThingSpeak.begin(client);
+
   //SERVER ROUTE SETUP
   server.on("/feed", feedHandler);
   server.on("/weight", weightHandler);
   server.begin();
   Serial.println("HTTP server started");
-  
+
+
   
   delay(500);
 }
@@ -193,6 +207,18 @@ void loop() {
       Serial.println("Eating ended");
       eating = false;
       digitalWrite(led, HIGH);
+
+      ThingSpeak.setField(1, original_weight);
+      ThingSpeak.setField(2, new_weight);
+      ThingSpeak.setField(3, new_weight - original_weight);
+      
+      int code = ThingSpeak.writeFields(EAT_CHANNELID, EAT_CHANNELAPIKEY);
+      if(code == 200){
+      Serial.println("Channel update successful.");
+      }
+      else{
+      Serial.println("Problem updating channel. HTTP error code " + String(code));
+      }
     }
   }
   

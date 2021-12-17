@@ -22,6 +22,7 @@ func main() {
 
 	api := app.Group("/api")
 	Routes.FeedRoute(api.Group("/feed"))
+	Routes.StatRoute(api.Group("/record"))
 
 
 

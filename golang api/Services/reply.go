@@ -2,8 +2,8 @@ package Services
 
 import (
 	"log"
-	"mf-aoc-service/DB"
-	"mf-aoc-service/Model"
+	"proj4230/DB"
+	"proj4230/Model"
 
 	"github.com/rs/xid"
 
@@ -11,10 +11,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func GetReplyFolderByID(c *fiber.Ctx) error {
-	adminColl := DB.MI.RpyDBCol
+func GetRecordByTime(c *fiber.Ctx) error {
+	adminColl := DB.MI.FeedDBCol
 
-	paramID := c.Params("id")
+	paramID := c.Params("time")
 
 	reply := &Model.StandardReply{}
 	filter := bson.D{{Key: "id", Value: paramID}}

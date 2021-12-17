@@ -8,20 +8,21 @@ import (
 
 func FeedRoute(route fiber.Router) {
 
-	route.Get("/time/:time", Services.GetAllChannelInfo)
-	route.Get("/gram/:gram", Services.GetChannelInfoById)
+	route.Get("/ip", Services.GetDeviceIP)
+
+	route.Get("/time/:time", Services.FeedByTime)
+	//route.Get("/gram/:gram", Services.GetChannelInfoById)
 
 }
 
-func Statroute(route fiber.Router) {
+func StatRoute(route fiber.Router) {
 
-	route.Get("/time/:time", Services.GetAllChannelInfo)
-	route.Get("/gram/:gram", Services.GetChannelInfoById)
+	route.Get("/time/:time", Services.GetRecordByTime)
 
-	route.Post("/", Services.AddChannel)
+	route.Post("/", Services.AddFeedRecord)
 
-	route.Put("/id/:id", Services.UpdateChannelById)
+	//route.Put("/id/:id", Services.UpdateChannelById)
 
-	route.Delete("/id/:id", Services.DeleteChannelById)
+	//route.Delete("/id/:id", Services.DeleteChannelById)
 }
 
