@@ -4,8 +4,7 @@ import { Typography} from "@material-ui/core";
 import '../App.css';
 
 var headertextstyle = {
-    fontsize : 50,
-    fontFamily : "Noto Sans"
+    fontSize : 20,
 }
 
 const ColoredLine = ({ color }) => (
@@ -13,7 +12,7 @@ const ColoredLine = ({ color }) => (
       style={{
         color,
         backgroundColor: color,
-        height: 5
+
       }}
     />
 );
@@ -30,7 +29,7 @@ class Header extends Component {
                 <Typography style={headertextstyle}>
                     Smart Pet Feeder
                 </Typography>
-
+<p></p>
                 <ColoredLine color="black" />
             </header>
         );
