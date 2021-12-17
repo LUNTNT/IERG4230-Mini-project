@@ -13,13 +13,12 @@ class Statistic extends Component {
             <Grid>
                 <div className='App'>
                     <Header/>
-
-                    <Typography style={text}>
-                        Feed History:
-                    </Typography>
                     <p></p>
                     <div>
-                        <iframe width="450" height="260" src="https://thingspeak.com/channels/1525712/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+                        <iframe width="450" height="260" src="https://thingspeak.com/channels/1611327/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line"></iframe>
+                        <p></p>
+                        <iframe width="450" height="260" src="https://thingspeak.com/channels/1611256/charts/2?bgcolor=%23ffffff&color=%23d62020&days=1&dynamic=true&results=60&title=Feed+Record&type=line"></iframe>
+                    
                     </div>
                 </div>
             </Grid>

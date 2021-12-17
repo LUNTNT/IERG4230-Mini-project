@@ -16,7 +16,7 @@ class Homepage extends Component {
     }
 
     handleClick() {
-        axios.get('http://192.168.137.117/feed?time=5')
+        axios.get('http://192.168.137.164/feed?time=5')
     }
 
 
