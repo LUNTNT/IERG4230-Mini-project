@@ -3,12 +3,7 @@ import React, {Component} from 'react'
 import { Typography, Link, Button } from "@material-ui/core";
 import '../App.css';
 import axios from 'axios';
-
-
-var headertextstyle = {
-    fontsize : 50,
-    fontFamily : "Noto Sans"
-}
+import Header from './Header';
 
 
 class Homepage extends Component {
@@ -26,23 +21,20 @@ class Homepage extends Component {
     render() {
         return(
             <div className="App">
-                <header className="App-header">
-                    <img src={logo} alt="logo" height={150} width={150}/>
-                    <Typography style={headertextstyle}>
-                        Smart Pet Feeder
-                    </Typography>
 
-                </header>
+                <Header />
                 <p></p>
-                     <Button variant="contained" onClick={this.handleClick}>
+                    <Button variant="contained" onClick={this.handleClick}>
                         Feed
                     </Button>
+
                     <Button variant="contained" href="/stat" >
                         Statistic
                     </Button>
+
             </div>
-        )
-    }
+        );
+    };
 }
 
 export default Homepage;
