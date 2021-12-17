@@ -4,11 +4,14 @@ import '../App.css';
 import axios from 'axios';
 import Header from './Header';
 
+var style = {
+    textAlign:"center",
+    flexDirection: "column"
+}
 
 class Homepage extends Component {
     constructor() {
         super()
-
         this.handleClick = this.handleClick.bind(this)
     }
 
@@ -20,17 +23,16 @@ class Homepage extends Component {
     render() {
         return(
             <div className="App">
-
                 <Header />
                 <p></p>
                     <Button variant="contained" onClick={this.handleClick}>
                         Feed
                     </Button>
+                    <p></p>
 
                     <Button variant="contained" href="/stat" >
                         Statistic
                     </Button>
-
             </div>
         );
     };

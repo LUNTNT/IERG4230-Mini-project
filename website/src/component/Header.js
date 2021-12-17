@@ -14,7 +14,6 @@ const ColoredLine = ({ color }) => (
         color,
         backgroundColor: color,
         height: 5
-    
       }}
     />
 );
@@ -27,16 +26,15 @@ class Header extends Component {
                 <a href='/home'> 
                     <img src={logo} alt="logo" height={150} width={150}/> 
                 </a>
+                
                 <Typography style={headertextstyle}>
                     Smart Pet Feeder
                 </Typography>
+
                 <ColoredLine color="black" />
             </header>
-
         );
-
     };
-
 }
 
 export default Header;
