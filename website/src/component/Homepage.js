@@ -1,6 +1,5 @@
-import logo from '../logo.png';
 import React, {Component} from 'react'
-import { Typography, Link, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import '../App.css';
 import axios from 'axios';
 import Header from './Header';

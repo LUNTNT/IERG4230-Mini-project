@@ -2,7 +2,7 @@ import React from "react";
 import Homepage from "./component/Homepage";
 import Statistic from "./component/Statistic";
 import "./App.css";
-import { Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import { Grid } from '@material-ui/core';
 

@@ -1,6 +1,6 @@
 import logo from '../logo.png';
 import React, {Component} from 'react'
-import { Typography, Link, Button, Text } from "@material-ui/core";
+import { Typography} from "@material-ui/core";
 import '../App.css';
 
 var headertextstyle = {
