@@ -176,7 +176,7 @@ void loop() {
     Serial.print(new_weight, 1);
     Serial.println(" g");
 
-    if (original_weight - new_weight >= 2) {
+    if (original_weight - new_weight >= 0.5) {
       Serial.println("Eating detected");
       eating = true;
       digitalWrite(led, LOW);
@@ -203,7 +203,7 @@ void loop() {
     Serial.print(new_weight, 1);
     Serial.println(" g");
 
-    if (temp_weight - new_weight <= 2) {
+    if (temp_weight - new_weight <= 0.5) {
       Serial.println("Eating ended");
       eating = false;
       digitalWrite(led, HIGH);
